@@ -2,6 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:watcher/watcher.dart';
+import 'package:whatsapp_status_saver/providers/files_provider.dart';
 import 'package:whatsapp_status_saver/utils/constants.dart';
 import 'package:whatsapp_status_saver/views/screens/images_screen.dart';
 import 'package:whatsapp_status_saver/views/screens/videos_screen.dart';
@@ -16,23 +19,35 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  List<FileSystemEntity> contents = [];
-  Directory? directory;
+  final directoryWatcher = DirectoryWatcher(AppConstants.WHATSAPP_PATH);
 
-  Future<void> listDircontents() async {
-    directory = Directory(AppConstants.WHATSAPP_PATH);
-    if (directory!.existsSync()) {
-      setState(() {
-        contents = directory!.listSync();
-      });
-      log(directory!.listSync().toString());
+  void loadDirContents() {
+    final directory = Directory(AppConstants.WHATSAPP_PATH);
+    if (directory.existsSync()) {
+      context.read<FilesProvider>().whatsappStatusesPaths =
+          directory.listSync().map((e) => e.path).toList();
+      setState(() {});
     }
   }
 
   @override
   void initState() {
     super.initState();
-    listDircontents();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadDirContents();
+
+      directoryWatcher.events.listen((event) {
+        context.read<FilesProvider>().updateStatuses(event.path);
+        if (event.type == ChangeType.ADD) {
+          context.read<FilesProvider>().updateStatuses(event.path);
+        } else if (event.type == ChangeType.REMOVE) {
+          context
+              .read<FilesProvider>()
+              .updateStatuses(event.path, isAddition: false);
+        }
+      });
+    });
   }
 
   @override
@@ -62,18 +77,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         drawer: const AppDrawer(),
         body: TabBarView(
           children: [
-            ImageScreen(
-              contents: contents
-                  .where((content) => content.path.endsWith('.jpg'))
-                  .toList(growable: false),
-            ),
-            VideoScreen(
-              contents: contents
-                  .where((content) => content.path.endsWith('.mp4'))
-                  .toList(growable: false),
-            ),
+            ImageScreen(),
+            VideoScreen(),
           ],
         ),
+        // floatingActionButton: FloatingActionButton(onPressed: () {
+        //   log(Provider.of<FilesProvider>(context, listen: false)
+        //       .whatsappStatusesPaths
+        //       .toString());
+        // }),
       ),
     );
   }
