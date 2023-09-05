@@ -38,6 +38,10 @@ dependencies:
   permission_handler: ^10.4.3
   path_provider: ^2.1.0
   shared_preferences: ^2.2.0
+  provider: ^6.0.5
+  watcher: ^1.1.0
+  video_player:
+  video_thumbnail:
 
 dev_dependencies:
   flutter_test:

@@ -1,25 +1,33 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
 
+import '../../providers/files_provider.dart';
+import '../../utils/constants.dart';
+
 class ImageScreen extends StatelessWidget {
-  List<FileSystemEntity>? contents;
-  ImageScreen({super.key, this.contents});
+  ImageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var filesProvider = Provider.of<FilesProvider>(context);
+    List<String> imagePaths = filesProvider.whatsappStatusesPaths
+        .where((element) => element.endsWith('.jpg')).toList();
     return GridView.builder(
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemCount: contents!.length,
+      itemCount: imagePaths.length,
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
+              filterQuality: FilterQuality.high,
+              fit: BoxFit.cover,
               image: FileImage(
-                File(contents![index].path),
+                File(imagePaths[index]),
               ),
             ),
           ),
