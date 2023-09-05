@@ -18,6 +18,8 @@ class ImageScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
+              filterQuality: FilterQuality.high,
+              fit: BoxFit.cover,
               image: FileImage(
                 File(contents![index].path),
               ),

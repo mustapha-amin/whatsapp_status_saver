@@ -29,8 +29,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  fetchContents() async {}
-
   @override
   void initState() {
     super.initState();
@@ -75,9 +73,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   .toList(growable: false),
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: listDircontents,
         ),
       ),
     );
