@@ -5,25 +5,24 @@ import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
 
 import '../../providers/whatsapp_status_provider.dart';
-import '../../utils/constants.dart';
 
 class ImageScreen extends StatelessWidget {
-  ImageScreen({super.key});
+  const ImageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    WhatsappStatusProvider whatsappStatusProvider = Provider.of<WhatsappStatusProvider>(context);
+    var whatsappStatusProvider = Provider.of<WhatsappStatusProvider>(context);
     List<String> imagePaths = whatsappStatusProvider.whatsappStatusesPaths
         .where((element) => element.endsWith('.jpg'))
         .toList();
     return GridView.builder(
+      physics: const BouncingScrollPhysics(),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: imagePaths.length,
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
               filterQuality: FilterQuality.high,
               fit: BoxFit.cover,

@@ -11,4 +11,9 @@ class WhatsappStatusProvider extends ChangeNotifier {
         : whatsappStatusesPaths.remove(newStatusPath);
     notifyListeners();
   }
+
+  void updateStatusesList(List<String> paths) {
+    whatsappStatusesPaths = paths;
+    notifyListeners();
+  }
 }

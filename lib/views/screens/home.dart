@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -24,9 +23,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void loadDirContents() {
     final directory = Directory(AppConstants.WHATSAPP_PATH);
     if (directory.existsSync()) {
-      context.read<WhatsappStatusProvider>().whatsappStatusesPaths =
+      final directoryContentsPaths =
           directory.listSync().map((e) => e.path).toList();
-      setState(() {});
+      context
+          .read<WhatsappStatusProvider>()
+          .updateStatusesList(directoryContentsPaths);
     }
   }
 
@@ -55,6 +56,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.grey[400],
         appBar: AppBar(
           title: const Text("Whatsapp status saver"),
           bottom: TabBar(
@@ -81,11 +83,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             VideoScreen(),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(onPressed: () {
-        //   log(Provider.of<WhatsappStatusProvider>(context, listen: false)
-        //       .whatsappStatusesPaths
-        //       .toString());
-        // }),
       ),
     );
   }
