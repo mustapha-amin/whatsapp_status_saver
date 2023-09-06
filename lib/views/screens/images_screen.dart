@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
+import 'package:whatsapp_status_saver/utils/navigation.dart';
+import 'package:whatsapp_status_saver/views/screens/image_viewer.dart';
 
 import '../../providers/whatsapp_status_provider.dart';
+import '../widgets/status_image.dart';
 
 class ImageScreen extends StatelessWidget {
   const ImageScreen({super.key});
@@ -21,19 +24,11 @@ class ImageScreen extends StatelessWidget {
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: imagePaths.length,
       itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              filterQuality: FilterQuality.high,
-              fit: BoxFit.cover,
-              image: FileImage(
-                File(imagePaths[index]),
-              ),
-            ),
-          ),
-          margin: const EdgeInsets.all(4),
-          width: context.screenWidth * .5,
-          height: context.screenHeight * .2,
+        return GestureDetector(
+          onTap: () {
+            navigateTo(context, ImageViewer(index: index));
+          },
+          child: StatusImage(imagePath: imagePaths[index]),
         );
       },
     );

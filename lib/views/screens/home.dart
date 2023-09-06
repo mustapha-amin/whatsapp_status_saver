@@ -33,11 +33,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadDirContents();
-
       directoryWatcher.events.listen((event) {
         context.read<WhatsappStatusProvider>().updateStatuses(event.path);
         if (event.type == ChangeType.ADD) {
@@ -49,6 +46,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         }
       });
     });
+
+    super.initState();
   }
 
   @override

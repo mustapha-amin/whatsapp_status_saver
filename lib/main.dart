@@ -9,22 +9,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OnboardingPreference.initOnboardingPrefs();
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-      ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => WhatsappStatusProvider(),
-          )
-        ],
-        child: OnboardingPreference.isFirstTime()
-            ? const OnboardingScreen()
-            : const Home(),
-      ),
-    ),
+    ChangeNotifierProvider(
+        create: (_) => WhatsappStatusProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          ),
+          home: OnboardingPreference.isFirstTime()
+              ? const OnboardingScreen()
+              : const Home(),
+        )),
   );
 }
