@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watcher/watcher.dart';
-import 'package:whatsapp_status_saver/providers/files_provider.dart';
+import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
 import 'package:whatsapp_status_saver/utils/constants.dart';
 import 'package:whatsapp_status_saver/views/screens/images_screen.dart';
 import 'package:whatsapp_status_saver/views/screens/videos_screen.dart';
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void loadDirContents() {
     final directory = Directory(AppConstants.WHATSAPP_PATH);
     if (directory.existsSync()) {
-      context.read<FilesProvider>().whatsappStatusesPaths =
+      context.read<WhatsappStatusProvider>().whatsappStatusesPaths =
           directory.listSync().map((e) => e.path).toList();
       setState(() {});
     }
@@ -38,12 +38,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       loadDirContents();
 
       directoryWatcher.events.listen((event) {
-        context.read<FilesProvider>().updateStatuses(event.path);
+        context.read<WhatsappStatusProvider>().updateStatuses(event.path);
         if (event.type == ChangeType.ADD) {
-          context.read<FilesProvider>().updateStatuses(event.path);
+          context.read<WhatsappStatusProvider>().updateStatuses(event.path);
         } else if (event.type == ChangeType.REMOVE) {
           context
-              .read<FilesProvider>()
+              .read<WhatsappStatusProvider>()
               .updateStatuses(event.path, isAddition: false);
         }
       });
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ],
         ),
         // floatingActionButton: FloatingActionButton(onPressed: () {
-        //   log(Provider.of<FilesProvider>(context, listen: false)
+        //   log(Provider.of<WhatsappStatusProvider>(context, listen: false)
         //       .whatsappStatusesPaths
         //       .toString());
         // }),

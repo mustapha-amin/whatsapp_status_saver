@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
 
-import '../../providers/files_provider.dart';
+import '../../providers/whatsapp_status_provider.dart';
 import '../../utils/constants.dart';
 
 class ImageScreen extends StatelessWidget {
@@ -12,9 +12,10 @@ class ImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var filesProvider = Provider.of<FilesProvider>(context);
-    List<String> imagePaths = filesProvider.whatsappStatusesPaths
-        .where((element) => element.endsWith('.jpg')).toList();
+    WhatsappStatusProvider whatsappStatusProvider = Provider.of<WhatsappStatusProvider>(context);
+    List<String> imagePaths = whatsappStatusProvider.whatsappStatusesPaths
+        .where((element) => element.endsWith('.jpg'))
+        .toList();
     return GridView.builder(
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

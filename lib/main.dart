@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/onboarding.dart';
-import 'package:whatsapp_status_saver/providers/files_provider.dart';
+import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
 import 'package:whatsapp_status_saver/services/onboarding_settings.dart';
 import 'package:whatsapp_status_saver/views/screens/home.dart';
 
@@ -18,12 +18,12 @@ void main() async {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (_) => FilesProvider(),
+            create: (_) => WhatsappStatusProvider(),
           )
         ],
         child: OnboardingPreference.isFirstTime()
-          ? const OnboardingScreen()
-          : const Home(),
+            ? const OnboardingScreen()
+            : const Home(),
       ),
     ),
   );

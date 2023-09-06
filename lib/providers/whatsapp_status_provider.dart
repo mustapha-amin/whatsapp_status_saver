@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class FilesProvider extends ChangeNotifier {
+class WhatsappStatusProvider extends ChangeNotifier {
   List<String> whatsappStatusesPaths = [];
 
   void updateStatuses(String? newStatusPath, {bool isAddition = true}) {
