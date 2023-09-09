@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
+import 'package:whatsapp_status_saver/utils/spacings.dart';
+import 'package:whatsapp_status_saver/utils/textstyle.dart';
 
 class ImageViewer extends StatefulWidget {
   int index;
@@ -32,17 +34,64 @@ class _ImageViewerState extends State<ImageViewer> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-      body: PageView(
-        controller: controller,
+      body: Stack(
+        alignment: Alignment.center,
         children: [
-          ...whatsappStatusProvider.whatsappStatusesPaths
-              .where((content) => content.endsWith('.jpg'))
-              .map(
-                (e) => Container(
-                  color: Colors.black,
-                  child: Image.file(File(e)),
+          PageView(
+            controller: controller,
+            children: [
+              ...whatsappStatusProvider.whatsappStatusesPaths
+                  .where((content) => content.endsWith('.jpg'))
+                  .map(
+                    (e) => Container(
+                      color: Colors.black,
+                      child: Hero(
+                        tag: e,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Image.file(File(e)),
+                        ),
+                      ),
+                    ),
+                  )
+            ],
+          ),
+          Positioned(
+            bottom: 5,
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    IconButton(
+                      iconSize: 30,
+                      color: Colors.white,
+                      onPressed: () {},
+                      icon: Icon(Icons.share_outlined),
+                    ),
+                    Text(
+                      "Share",
+                      style: kTextStyle(15, color: Colors.white),
+                    ),
+                  ],
                 ),
-              )
+                addSpacing(70, isVertical: false),
+                Column(
+                  children: [
+                    IconButton(
+                      iconSize: 30,
+                      color: Colors.white,
+                      onPressed: () {},
+                      icon: Icon(Icons.download_outlined),
+                    ),
+                    Text(
+                      "Download",
+                      style: kTextStyle(14, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
