@@ -15,6 +15,7 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       width: context.screenWidth * .85,
       child: ListView(
+        physics: const ClampingScrollPhysics(),
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(color: AppConstants.appColor),
@@ -32,7 +33,8 @@ class AppDrawer extends StatelessWidget {
                 addSpacing(20),
                 Text(
                   "Version 1.0",
-                  style: kTextStyle(15, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: kTextStyle(15,
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
