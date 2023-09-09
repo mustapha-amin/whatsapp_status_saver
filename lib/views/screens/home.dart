@@ -62,7 +62,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             dividerColor: Colors.grey[600],
             indicatorColor: AppConstants.appColor,
             indicatorSize: TabBarIndicatorSize.label,
-            labelColor: Colors.amber[900],
+            labelColor: AppConstants.appColor,
             tabs: const [
               Tab(
                 icon: Icon(Icons.image, color: Colors.black),
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         ),
         drawer: const AppDrawer(),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             ImageScreen(),
             VideoScreen(),
