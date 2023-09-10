@@ -7,7 +7,7 @@ import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
 import 'package:whatsapp_status_saver/utils/constants.dart';
 import 'package:whatsapp_status_saver/views/screens/images_screen.dart';
 import 'package:whatsapp_status_saver/views/screens/videos_screen.dart';
-
+import 'dart:developer';
 import '../widgets/drawer.dart';
 
 class Home extends StatefulWidget {
@@ -19,15 +19,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final directoryWatcher = DirectoryWatcher(AppConstants.WHATSAPP_PATH);
+  final directory = Directory(AppConstants.WHATSAPP_PATH);
 
   void loadDirContents() {
-    final directory = Directory(AppConstants.WHATSAPP_PATH);
     if (directory.existsSync()) {
       final directoryContentsPaths =
           directory.listSync().map((e) => e.path).toList();
       context
           .read<WhatsappStatusProvider>()
           .updateStatusesList(directoryContentsPaths);
+      context.read<WhatsappStatusProvider>().loadThumbnails();
     }
   }
 
@@ -36,22 +37,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadDirContents();
       directoryWatcher.events.listen((event) {
-        context.read<WhatsappStatusProvider>().updateStatuses(event.path);
-        if (event.type == ChangeType.ADD) {
-          context.read<WhatsappStatusProvider>().updateStatuses(event.path);
-        } else if (event.type == ChangeType.REMOVE) {
-          context
-              .read<WhatsappStatusProvider>()
-              .updateStatuses(event.path, isAddition: false);
+        if (event.type == ChangeType.ADD || event.type == ChangeType.REMOVE) {
+          loadDirContents();
         }
       });
     });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var prov = Provider.of<WhatsappStatusProvider>(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
