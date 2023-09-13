@@ -13,7 +13,7 @@ class WhatsappStatusProvider extends ChangeNotifier {
     final directory =
         await getTemporaryDirectory(); // You can change this to your desired directory.
 
-    for (final videoPath in videoPaths) {
+    videoThumbnails.addAll(await Future.wait(videoPaths.map((videoPath) async {
       final thumbnailPath = '${directory.path}/${videoPath.hashCode}.jpg';
 
       if (!await File(thumbnailPath).exists()) {
@@ -23,11 +23,12 @@ class WhatsappStatusProvider extends ChangeNotifier {
           imageFormat: ImageFormat.JPEG,
           quality: 25,
         );
-        videoThumbnails.add(thumbnailPath);
       }
 
-      notifyListeners();
-    }
+      return thumbnailPath;
+    })));
+
+    notifyListeners();
   }
 
   void loadThumbnails() {
