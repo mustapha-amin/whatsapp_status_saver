@@ -47,7 +47,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var prov = Provider.of<WhatsappStatusProvider>(context);
+    //var prov = Provider.of<WhatsappStatusProvider>(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(

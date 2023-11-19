@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
+import 'package:whatsapp_status_saver/utils/textstyle.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   String? path;
@@ -15,63 +16,146 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController videoPlayerController;
-  bool _opaque = true;
+  bool _opaque = false;
+  double _sliderVal = 0;
+  int _currentDuration = 0;
+  int _totalDuration = 0;
 
   @override
   void initState() {
     super.initState();
     log(widget.path!);
     videoPlayerController = VideoPlayerController.file(File(widget.path!))
-      ..initialize().then(
-        (_) => setState(() {}),
-      );
+      ..initialize().then((_) => setState(() {}))
+      ..addListener(() {
+        setState(() {
+          _currentDuration =
+              videoPlayerController.value.position.inSeconds.toInt();
+          _sliderVal = _currentDuration.toDouble();
+          _totalDuration = videoPlayerController.value.duration.inSeconds;
+        });
+      })
+      ..play();
   }
 
-  void toggleOpacity() async {
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      _opaque = false;
-    });
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-      ),
       body: Center(
         child: videoPlayerController.value.isInitialized
             ? GestureDetector(
                 onTap: () {
-                  setState(() {});
                   videoPlayerController.value.isPlaying
                       ? {
+                          setState(() {
+                            _opaque = true;
+                          }),
                           videoPlayerController.pause(),
-                          setState(() => _opaque = true)
                         }
                       : {
+                          setState(() {
+                            _opaque = false;
+                          }),
                           videoPlayerController.play(),
-                          toggleOpacity(),
                         };
                 },
                 child: Stack(
-                  alignment: Alignment.center,
+                  fit: StackFit.expand,
                   children: [
                     AspectRatio(
                       aspectRatio: videoPlayerController.value.aspectRatio,
                       child: VideoPlayer(videoPlayerController),
                     ),
-                    Opacity(
-                      opacity: _opaque ? 1 : 0,
+                    AnimatedOpacity(
+                      opacity: !videoPlayerController.value.isPlaying && _opaque
+                          ? 1
+                          : 0,
+                      duration: const Duration(milliseconds: 500),
                       child: Icon(
                         videoPlayerController.value.isPlaying
                             ? Icons.pause
                             : Icons.play_arrow,
                         color: Colors.grey.withOpacity(0.8),
                         size: context.screenWidth * .3,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 50,
+                      right: 5,
+                      child: IconButton.filledTonal(
+                        color: Colors.black,
+                        onPressed: () {},
+                        icon: Row(
+                          children: [
+                            const Icon(Icons.download_outlined),
+                            Text(
+                              "Save",
+                              style: kTextStyle(18, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  _currentDuration <= 9
+                                      ? "0:0$_currentDuration"
+                                      : "0:$_currentDuration",
+                                  style: kTextStyle(
+                                    15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: context.screenWidth * 0.8,
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      trackHeight: 4,
+                                      thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 6,
+                                      ),
+                                    ),
+                                    child: Slider(
+                                        inactiveColor: Colors.grey,
+                                        activeColor: Colors.white,
+                                        min: 0,
+                                        max: videoPlayerController
+                                            .value.duration.inSeconds
+                                            .toDouble(),
+                                        value: _sliderVal,
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        }),
+                                  ),
+                                ),
+                                Text(
+                                  _totalDuration <= 9
+                                      ? "0:0$_totalDuration"
+                                      : "0:$_totalDuration",
+                                  style: kTextStyle(
+                                    15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
