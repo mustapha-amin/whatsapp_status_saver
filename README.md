@@ -1,16 +1,11 @@
 # whatsapp_status_saver
 
-A new Flutter project.
+#Overview
+This Flutter project offers a comprehensive solution for saving and previewing WhatsApp statuses, encompassing both images and videos. It provides an intuitive interface for users to manage and access saved media easily. The app utilizes the Provider package for efficient state management, ensuring smooth functionality and a seamless user experience.
 
-## Getting Started
+#Features
+##Image and Video Saving: Save WhatsApp statuses, including both images and videos, directly to your device.
+##Preview Functionality: Preview images and videos before saving to ensure the right media is selected.
+##Categorized Storage: Organize saved statuses into separate categories for images and videos for convenient access
+##Efficient State Management: Utilizes the Provider package for streamlined state management and enhanced performance.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
