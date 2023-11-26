@@ -5,5 +5,6 @@ TextStyle kTextStyle(double size, {FontWeight? fontWeight, Color? color,}) {
     fontSize: size,
     fontWeight: fontWeight ?? FontWeight.normal,
     color: color ?? Colors.black,
+    fontFamily: "Montserrat"
   );
 }

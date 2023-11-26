@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
 import 'package:whatsapp_status_saver/utils/extensions.dart';
 import 'package:whatsapp_status_saver/utils/textstyle.dart';
+import 'package:provider/provider.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   String? path;
@@ -47,6 +49,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+      backgroundColor: Colors.black,
       body: Center(
         child: videoPlayerController.value.isInitialized
             ? GestureDetector(
@@ -90,16 +97,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       right: 5,
                       child: IconButton.filledTonal(
                         color: Colors.black,
-                        onPressed: () {},
-                        icon: Row(
-                          children: [
-                            const Icon(Icons.download_outlined),
-                            Text(
-                              "Save",
-                              style: kTextStyle(18, color: Colors.black),
-                            ),
-                          ],
-                        ),
+                        onPressed: () {
+                          context
+                              .read<WhatsappStatusProvider>()
+                              .saveStatus(context, widget.path!);
+                        },
+                        icon: const Icon(Icons.download_outlined),
                       ),
                     ),
                     Positioned(
@@ -137,8 +140,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                                             .value.duration.inSeconds
                                             .toDouble(),
                                         value: _sliderVal,
-                                        onChanged: (_) {
-                                          setState(() {});
+                                        onChanged: (newPosition) {
+                                          setState(() async {
+                                            videoPlayerController.seekTo(
+                                              Duration(
+                                                seconds: newPosition.toInt(),
+                                              ),
+                                            );
+                                          });
                                         }),
                                   ),
                                 ),

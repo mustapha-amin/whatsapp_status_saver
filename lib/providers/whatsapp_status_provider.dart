@@ -1,8 +1,11 @@
-import 'dart:io';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:whatsapp_status_saver/utils/snackbar.dart';
 
 class WhatsappStatusProvider extends ChangeNotifier {
   List<String> whatsappStatusesPaths = [];
@@ -38,5 +41,20 @@ class WhatsappStatusProvider extends ChangeNotifier {
   void updateStatusesList(List<String> paths) {
     whatsappStatusesPaths = paths;
     notifyListeners();
+  }
+
+  void saveStatus(BuildContext context, String path, [bool? isImage]) async {
+    isImage ??= false;
+    try {
+      isImage
+          ? await GallerySaver.saveImage(path, albumName: "Whatsapp statuses")
+          : await GallerySaver.saveVideo(
+              path,
+              albumName: "Whatsapp statuses",
+            );
+      displaySnackBar(context, "Downloaded");
+    } catch (e) {
+      displaySnackBar(context, "An error occured");
+    }
   }
 }

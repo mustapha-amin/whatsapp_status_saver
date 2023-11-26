@@ -5,6 +5,7 @@ import 'package:whatsapp_status_saver/views/screens/video_player_screen.dart';
 import 'package:whatsapp_status_saver/views/widgets/status_image.dart';
 
 import '../../providers/whatsapp_status_provider.dart';
+import '../../utils/constants.dart';
 
 class VideoScreen extends StatelessWidget {
   const VideoScreen({super.key});
@@ -38,6 +39,35 @@ class VideoScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            Positioned(
+              bottom: 3,
+              right: 3,
+              child: InkWell(
+                onTap: () {
+                  whatsappStatusProvider.saveStatus(
+                    context,
+                    vidoePaths[index],
+                    false,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppConstants.appColor,
+                      shape: BoxShape.circle,
+                    ),
+                    width: 35,
+                    height: 35,
+                    child: const Icon(
+                      Icons.download,
+                      size: 23,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         );

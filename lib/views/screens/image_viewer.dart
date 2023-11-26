@@ -10,7 +10,8 @@ import '/utils/extensions.dart';
 
 class ImageViewer extends StatefulWidget {
   int index;
-  ImageViewer({required this.index, super.key});
+  List<String> paths;
+  ImageViewer({required this.index, required this.paths, super.key});
 
   @override
   State<ImageViewer> createState() => _ImageViewerState();
@@ -64,43 +65,25 @@ class _ImageViewerState extends State<ImageViewer> {
               ],
             ),
           ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          addSpacing(70, isVertical: false),
+          IconButton(
+            iconSize: 30,
+            color: Colors.white,
+            onPressed: () {
+              whatsappStatusProvider.saveStatus(
+                context,
+                widget.paths[widget.index],
+                true,
+              );
+            },
+            icon: Column(
               children: [
-                IconButton(
-                  iconSize: 30,
-                  color: Colors.white,
-                  onPressed: () {},
-                  icon: Column(
-                    children: [
-                      const Icon(Icons.share_outlined),
-                      Text(
-                        "Share",
-                        style: kTextStyle(15, color: Colors.white),
-                      ),
-                    ],
-                  ),
+                const Icon(
+                  Icons.download_outlined,
                 ),
-                addSpacing(70, isVertical: false),
-                IconButton(
-                  iconSize: 30,
-                  color: Colors.white,
-                  onPressed: () {
-                    print(whatsappStatusProvider.videoThumbnails.length
-                        .toString());
-                  },
-                  icon: Column(
-                    children: [
-                      const Icon(
-                        Icons.download_outlined,
-                      ),
-                      Text(
-                        "Download",
-                        style: kTextStyle(14, color: Colors.white),
-                      ),
-                    ],
-                  ),
+                Text(
+                  "Download",
+                  style: kTextStyle(14, color: Colors.white),
                 ),
               ],
             ),

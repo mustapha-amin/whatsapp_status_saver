@@ -26,7 +26,7 @@ class ImageScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                navigateTo(context, ImageViewer(index: index));
+                navigateTo(context, ImageViewer(index: index, paths: imagePaths));
               },
               child: StatusImage(imagePath: imagePaths[index]),
             ),
@@ -34,7 +34,13 @@ class ImageScreen extends StatelessWidget {
               bottom: 3,
               right: 3,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  whatsappStatusProvider.saveStatus(
+                    context,
+                    imagePaths[index],
+                    true,
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Container(

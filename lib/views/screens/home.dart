@@ -7,7 +7,7 @@ import 'package:whatsapp_status_saver/providers/whatsapp_status_provider.dart';
 import 'package:whatsapp_status_saver/utils/constants.dart';
 import 'package:whatsapp_status_saver/views/screens/images_screen.dart';
 import 'package:whatsapp_status_saver/views/screens/videos_screen.dart';
-import 'dart:developer';
+import '../../utils/textstyle.dart';
 import '../widgets/drawer.dart';
 
 class Home extends StatefulWidget {
@@ -53,7 +53,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.grey[400],
         appBar: AppBar(
-          title: const Text("Whatsapp status saver"),
+          title: Text(
+            "Whatsapp status saver",
+            style: kTextStyle(20),
+          ),
           bottom: TabBar(
             dividerColor: Colors.grey[600],
             indicatorColor: AppConstants.appColor,
