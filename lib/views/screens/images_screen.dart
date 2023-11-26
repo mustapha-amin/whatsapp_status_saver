@@ -17,49 +17,54 @@ class ImageScreen extends StatelessWidget {
         .where((element) => element.endsWith('.jpg'))
         .toList();
     return GridView.builder(
+      padding: const EdgeInsets.only(left: 5),
       physics: const BouncingScrollPhysics(),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: imagePaths.length,
       itemBuilder: (context, index) {
-        return Stack(
-          children: [
-            GestureDetector(
-              onTap: () {
-                navigateTo(context, ImageViewer(index: index, paths: imagePaths));
-              },
-              child: StatusImage(imagePath: imagePaths[index]),
-            ),
-            Positioned(
-              bottom: 3,
-              right: 3,
-              child: InkWell(
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            children: [
+              GestureDetector(
                 onTap: () {
-                  whatsappStatusProvider.saveStatus(
-                    context,
-                    imagePaths[index],
-                    true,
-                  );
+                  navigateTo(
+                      context, ImageViewer(index: index, paths: imagePaths));
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: AppConstants.appColor,
-                      shape: BoxShape.circle,
-                    ),
-                    width: 35,
-                    height: 35,
-                    child: const Icon(
-                      Icons.download,
-                      size: 23,
-                      color: Colors.white,
+                child: StatusImage(imagePath: imagePaths[index]),
+              ),
+              Positioned(
+                bottom: 8,
+                right: 10,
+                child: InkWell(
+                  onTap: () {
+                    whatsappStatusProvider.saveStatus(
+                      context,
+                      imagePaths[index],
+                      true,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: AppConstants.appColor,
+                        shape: BoxShape.circle,
+                      ),
+                      width: 35,
+                      height: 35,
+                      child: const Icon(
+                        Icons.download,
+                        size: 23,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

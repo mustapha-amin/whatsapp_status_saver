@@ -62,13 +62,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             indicatorColor: AppConstants.appColor,
             indicatorSize: TabBarIndicatorSize.label,
             labelColor: AppConstants.appColor,
+            labelStyle: kTextStyle(15),
             tabs: const [
               Tab(
-                icon: Icon(Icons.image, color: Colors.black),
+                icon: Icon(Icons.image),
                 text: "Images",
               ),
               Tab(
-                icon: Icon(Icons.video_collection_rounded, color: Colors.black),
+                icon: Icon(Icons.video_collection_rounded),
                 text: "Videos",
               ),
             ],

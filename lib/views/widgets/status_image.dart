@@ -22,6 +22,7 @@ class StatusImage extends StatelessWidget {
           tag: imagePath,
           child: Container(
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
               image: DecorationImage(
                 filterQuality: FilterQuality.high,
                 fit: BoxFit.cover,
@@ -30,7 +31,6 @@ class StatusImage extends StatelessWidget {
                 ),
               ),
             ),
-            margin: const EdgeInsets.all(4),
             width: context.screenWidth * .5,
             height: context.screenHeight * .2,
           ),

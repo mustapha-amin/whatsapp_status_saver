@@ -18,58 +18,63 @@ class VideoScreen extends StatelessWidget {
         .where((path) => path.endsWith('mp4'))
         .toList();
     return GridView.builder(
+      padding: const EdgeInsets.only(left: 5),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: videoThmbnails.length,
       itemBuilder: (context, index) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            StatusImage(imagePath: videoThmbnails.elementAt(index).toString()),
-            IconButton(
-              icon: const Icon(Icons.play_arrow),
-              color: Colors.white.withOpacity(0.5),
-              iconSize: 80,
-              onPressed: () {
-                navigateTo(
-                  context,
-                  VideoPlayerScreen(
-                    paths: vidoePaths,
-                    index: index,
-                  ),
-                );
-              },
-            ),
-            Positioned(
-              bottom: 3,
-              right: 3,
-              child: InkWell(
-                onTap: () {
-                  whatsappStatusProvider.saveStatus(
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              StatusImage(
+                  imagePath: videoThmbnails.elementAt(index).toString()),
+              IconButton(
+                icon: const Icon(Icons.play_arrow),
+                color: Colors.white.withOpacity(0.5),
+                iconSize: 80,
+                onPressed: () {
+                  navigateTo(
                     context,
-                    vidoePaths[index],
-                    false,
+                    VideoPlayerScreen(
+                      paths: vidoePaths,
+                      index: index,
+                    ),
                   );
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: AppConstants.appColor,
-                      shape: BoxShape.circle,
-                    ),
-                    width: 35,
-                    height: 35,
-                    child: const Icon(
-                      Icons.download,
-                      size: 23,
-                      color: Colors.white,
+              ),
+              Positioned(
+                bottom: 8,
+                right: 10,
+                child: InkWell(
+                  onTap: () {
+                    whatsappStatusProvider.saveStatus(
+                      context,
+                      vidoePaths[index],
+                      false,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: AppConstants.appColor,
+                        shape: BoxShape.circle,
+                      ),
+                      width: 35,
+                      height: 35,
+                      child: const Icon(
+                        Icons.download,
+                        size: 23,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
